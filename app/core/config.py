@@ -41,7 +41,7 @@ class Settings(BaseSettings):
 
     # Security
     API_KEY_REQUIRED: bool = True
-    API_KEYS_PATH: str = "C:/Users/Anton/Desktop/Megamind/resources/api_keys/api_keys.txt"
+    API_KEYS_PATH: str = "../../resources/api_keys/api_keys.txt"
 
     class Config:
         env_file = ".env"

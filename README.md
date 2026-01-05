@@ -98,6 +98,30 @@ MASK_STRATEGY=depth
 uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
 ```
 
+### Запуск в Docker
+
+Сервис полностью подготовлен для запуска в Docker контейнере с поддержкой GPU.
+
+**Требования:**
+- Docker Desktop (Windows) или Docker Engine (Linux).
+- **NVIDIA Container Toolkit** (обязательно для Linux, в Windows входит в Docker Desktop с WSL2).
+
+**Особенности:**
+- Используется `docker-compose` для автоматического проброса GPU и настройки путей.
+- Веса моделей (SDXL, ControlNet) кэшируются в Docker volume `hf_cache`, чтобы не скачивать их при каждом перезапуске.
+- Пути к ключам и LoRA-моделям автоматически переопределяются внутри контейнера, править код не нужно.
+
+**Инструкция:**
+
+1. **Подготовьте файлы:**
+   - Положите LoRA-веса в папку `models/lora/` на хосте.
+   - Создайте файл `secrets/api_keys.txt` и пропишите туда ключи.
+   - Убедитесь, что файлы `Dockerfile` и `docker-compose.yml` находятся в корне.
+
+2. **Запустите контейнер:**
+   ```bash
+   docker compose up -d --build
+
 Документация:
 - Swagger UI: `http://localhost:8000/docs`
 - ReDoc: `http://localhost:8000/redoc`

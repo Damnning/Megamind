@@ -1,0 +1,26 @@
+services:
+  neural-api:
+    build: .
+    container_name: neural-photo-api
+    ports:
+      - "8000:8000"
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=compute,utility
+      - ENABLE_MODEL_CPU_OFFLOAD=true
+      - USE_HALF_PRECISION=true
+    volumes:
+      - ./models/lora:/app/models/lora
+      - ./secrets/api_keys.txt:/app/secrets/api_keys.txt
+      - hf_cache:/root/.cache/huggingface
+      - ./.env:/app/.env
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+
+volumes:
+  hf_cache:
